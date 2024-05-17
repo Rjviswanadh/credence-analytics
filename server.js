@@ -3,7 +3,6 @@ const express = require("express");
 //const bodyParser = require("body-parser");
 const { MongoClient } = require("mongodb");
 const app = express();
-//app.use(cors());
 app.use(express.json());
 //app.use(bodyParser());
 let db;
@@ -26,7 +25,7 @@ app.listen(3005, () => {
 
 app.get("/getmovies", async (req, res) => {
   const getdata = await db.collection("movies").find().toArray();
-  console.log(getdata);
+  res.send(getdata);
 });
 app.post("/createpost", async (req, res) => {
   const { name, img, summary } = req.body;
