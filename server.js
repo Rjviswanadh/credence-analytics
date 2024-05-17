@@ -37,10 +37,13 @@ app.post("/createpost", async (req, res) => {
   console.log(updatedata);
 });
 app.put("/updatepost", async (req, res) => {
-  const { name, summary } = req.body;
+  const { name, img, summary } = req.body;
   const updateone = await db
     .collection("movies")
-    .updateOne({ name: `${name}` }, { $set: { summary: `${summary}` } });
+    .updateOne(
+      { name: `${name}` },
+      { $set: { summary: `${summary}`, img: `${img}` } }
+    );
   res.send("updated successfully");
 });
 app.delete("/deleteone", async (req, res) => {
