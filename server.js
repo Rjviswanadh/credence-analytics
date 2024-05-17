@@ -38,13 +38,19 @@ app.post("/createpost", async (req, res) => {
 });
 app.put("/updatepost", async (req, res) => {
   const { name, img, summary } = req.body;
-  const updateone = await db
-    .collection("movies")
-    .updateOne(
-      { name: `${name}` },
-      { $set: { summary: `${summary}`, img: `${img}` } }
-    );
-  res.send("updated successfully");
+  const getData = await db.collection("movies").findOne({ name: `${name}` });
+  console.log(getData);
+  if (getData === null) {
+    res.send("movie name not found");
+  } else {
+    const updateone = await db
+      .collection("movies")
+      .updateOne(
+        { name: `${name}` },
+        { $set: { summary: `${summary}`, img: `${img}` } }
+      );
+    res.send("updated successfully");
+  }
 });
 app.delete("/deleteone", async (req, res) => {
   const { name } = req.body;
