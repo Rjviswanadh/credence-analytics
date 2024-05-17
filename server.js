@@ -31,17 +31,23 @@ app.get("/getmovies", async (req, res) => {
 });
 app.post("/createpost", async (req, res) => {
   const { name, img, summary } = req.body;
-  const updatedata = await db
-    .collection("movies")
-    .insertOne({ name: `${name}`, img: `${img}`, summary: `${summary}` });
-  console.log(updatedata);
+  const check = await db.collection("movies").findOne({ name: `${name}` });
+  console.log(check);
+  if (check === null) {
+    const updatedata = await db
+      .collection("movies")
+      .insertOne({ name: `${name}`, img: `${img}`, summary: `${summary}` });
+    console.log(updatedata);
+  } else {
+    res.send("Movie already Exist");
+  }
 });
 app.put("/updatepost", async (req, res) => {
   const { name, img, summary } = req.body;
   const getData = await db.collection("movies").findOne({ name: `${name}` });
   console.log(getData);
   if (getData === null) {
-    res.send("movie name not found");
+    res.send("mMvie name not found can't update");
   } else {
     const updateone = await db
       .collection("movies")
